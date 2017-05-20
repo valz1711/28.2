@@ -30,3 +30,9 @@ SELECT COUNT(*) FROM CUSTOMER WHERE CUSTOMER.state = ‘CA’;
 • ORC’s Predicate Pushdown will consult the Inline Indexes to try to identify when entire blocks can be skipped all at once.
 • If a column is sorted, relevant records will get confined to one area on disk and the other pieces will be skipped very quickly.
 • You can force Hive to sort on a column by using the SORT BY keyword when creating the table and setting hive.enforce.sorting to true before inserting into the table.
+• ORC stores collections of rows in one file and within the collection the row data is stored in a columnar format.
+• This allows parallel processing of row collections across a cluster. Each file with the columnar layout is optimised for compression and skipping of data/columns to reduce read and decompression load.
+• ORC goes beyond RCFile and uses specific encoders for different column data types to improve compression further, e.g. variable length compression on integers.
+• ORC introduces a lightweight indexing that enables skipping of complete blocks of rows that do not match a query.
+• It comes with basic statistics — min, max, sum, and count — on columns.
+• Lastly, a larger block size of 256 MB by default optimizes for large sequential reads on HDFS for more throughput and fewer files to reduce load on the namenode.
